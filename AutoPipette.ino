@@ -3,7 +3,7 @@
 #include "buttons.h"
 #include "states.h"
 #include "safety.h"
-#include "imu.h"
+#include "imu_sensing.cpp"
 
 enum PipetteState
 {
