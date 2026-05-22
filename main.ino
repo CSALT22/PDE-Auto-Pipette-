@@ -18,13 +18,24 @@ enum PipetteState
 PipetteState currentState = HOME;
 bool liquidEmpty = false;
 
-// Intialising emergency stop
+// Emergency stop pin (change to your wired pin)
+const int ESTOP_PIN = 27;
+
+// Initialising emergency stop
 volatile bool emergencyStopTriggered = false;
 void emergencyStopISR()
 {
     emergencyStopTriggered = true;
 }
 
+void initEmergencyStopISR() {
+    pinMode(ESTOP_PIN, INPUT_PULLUP);
+    attachInterrupt(
+        digitalPinToInterrupt(ESTOP_PIN),
+        emergencyStopISR,
+        FALLING
+    );
+}
 
 void setup()
 {
@@ -32,13 +43,7 @@ void setup()
 
     // Initialise components/processes
     initPipetteAngleSensor();
-
-    // Interrupt service routine for emergency 
-    attachInterrupt(
-        digitalPinToInterrupt(ESTOP_PIN),
-        emergencyStopISR,
-        FALLING
-    );
+    initEmergencyStopISR();
 
     Serial.println("Auto Pipette System Initialised");
     Serial.println("Ready to Aspirate");
@@ -101,7 +106,7 @@ void loop()
     }
 
     checkLimits();
-    checkPipetteAngle(currentState);
+    readPipetteAngle();
 
     switch (currentState)
     {
