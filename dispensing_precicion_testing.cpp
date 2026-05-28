@@ -45,7 +45,7 @@ void setup() {
 
   stepper.setMaxSpeed(MAX_SPEED);
   stepper.setAcceleration(ACCELERATION);
-  stepper.move(-2500);      // changing this value to calibrate
+  stepper.move(-10000);      // changing this value to calibrate
 
   digitalWrite(EN_PIN, LOW);    // enable driver after config
   delay(500);
